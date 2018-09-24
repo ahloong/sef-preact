@@ -1,0 +1,78 @@
+.home {
+  padding: 20px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.cardHeader {
+  padding: 16px;
+}
+
+.cardBody {
+  padding: 16px;
+}
+.logo {
+  width: 180px;
+}
+.buyContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  min-height: 100vh;
+  justify-content: space-around;
+  /* background-image: url(https://www.globalairrail.com/images/news/2015/KLIA-New-design3-web.jpg); */
+  background: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0)),
+    url(https://www.globalairrail.com/images/news/2015/KLIA-New-design3-web.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.formContainer {
+  padding: 75px;
+  background-color: white;
+  box-shadow: 6px 8px 43px -15px rgba(0, 0, 0, 0.75);
+}
+.buyfrom {
+  display: inline-block;
+}
+.buyto {
+  display: inline-block;
+  padding-left: 60px;
+}
+.searchbutton {
+  margin-left: 13px;
+  margin-top: 25px;
+}
+.lineContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.linepiccont {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+.linepic {
+  width: 100%;
+}
+.lineText {
+  margin-top: 50px;
+  padding-left: 22px;
+}
+@media screen and (max-width: 768px) {
+  .formContainer {
+    padding: 24px;
+    width: calc(100% - 48px);
+  }
+  .buyContainer {
+    flex-direction: column-reverse;
+  }
+  .buyfrom,
+  .buyto {
+	display: block;
+	padding-left: 0;
+  }
+  .logo {
+    width: 75px;
+  }
+}

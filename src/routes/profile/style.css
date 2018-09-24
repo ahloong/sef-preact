@@ -1,0 +1,42 @@
+.profile {
+  padding: 20px;
+  min-height: 100%;
+  width: 100%;
+}
+.tixdate {
+  display: inline-block;
+}
+.tixtime {
+  display: inline-block;
+  margin-left: 10px;
+}
+.qr {
+  display: inline-block;
+}
+.print {
+  display: inline-block;
+  margin-left: 40px;
+}
+#icon {
+  font-size: 65px;
+  cursor: pointer;
+}
+.tixdetailcont {
+  display: flex;
+  max-width: 860px;
+  background: white;
+  justify-content: space-between;
+  padding: 28px;
+}
+.tixcont {
+	max-width: 860px;
+	background-color: white;
+	padding: 28px;
+	border: 1px solid lightgray;
+	box-shadow: 6px 9px 13px -9px rgba(0,0,0,0.75);
+}
+@media screen and (max-width: 768px) {
+	.tixdetailcont{
+		flex-direction: column;
+	}
+}
