@@ -38,21 +38,23 @@ export default class Header extends Component {
   goHome = this.linkTo("/");
   goToMyProfile = this.linkTo("/profile");
 
-  toggleDarkTheme = () => {
-    this.setState(
-      {
-        darkThemeEnabled: !this.state.darkThemeEnabled
-      },
-      () => {
-        if (this.state.darkThemeEnabled) {
-          document.body.classList.add("mdc-theme--dark");
-        } else {
-          document.body.classList.remove("mdc-theme--dark");
-        }
-      }
-    );
-  };
+  //not going to be used
+  // toggleDarkTheme = () => {
+  //   this.setState(
+  //     {
+  //       darkThemeEnabled: !this.state.darkThemeEnabled
+  //     },
+  //     () => {
+  //       if (this.state.darkThemeEnabled) {
+  //         document.body.classList.add("mdc-theme--dark");
+  //       } else {
+  //         document.body.classList.remove("mdc-theme--dark");
+  //       }
+  //     }
+  //   );
+  // };
 
+  //sign in using google account
   signIn = () => {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -63,6 +65,7 @@ export default class Header extends Component {
       });
   };
 
+  //sign out then redirect to home
   signOut = () => {
     firebase
       .auth()
@@ -72,10 +75,12 @@ export default class Header extends Component {
       });
   };
 
+  //open sign in dialog
   toggleSignInDig = () => {
     this.signoutDig.MDComponent.show();
   };
 
+  // custom email login specially for admin
   staffSignIn = () => {
     this.setState({ errorMessage: "" });
     firebase
@@ -93,6 +98,7 @@ export default class Header extends Component {
   render({ currentUser }, { errorMessage }) {
     return (
       <div>
+        {/* the sign in dialog */}
         <div>
           <div className={[style.signout_dialog, "signout_dialog"].join(" ")}>
             <Dialog
@@ -161,6 +167,7 @@ export default class Header extends Component {
             </Dialog>
           </div>
         </div>
+        {/* nav bar and sign in button */}
         <div class={style.navbar}>
           <nav>
             <Link

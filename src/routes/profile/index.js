@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import Button from "preact-material-components/Button";
 import "preact-material-components/Button/style.css";
 import style from "./style";
+import { firebase } from "@firebase/app";
 
 export default class Profile extends Component {
   state = {
@@ -10,37 +11,82 @@ export default class Profile extends Component {
     user: null
   };
 
-  // gets called when this route is navigated to
+  // the broken profile page
   componentDidMount() {
+    //useless
     // start a timer for the clock:
-    this.timer = setInterval(this.updateTime, 1000);
-    console.log(this.state.currentUser);
+    // this.timer = setInterval(this.updateTime, 1000);
+    //debugging purposes
+    // console.log(this.state.currentUser);
+    
+    // get the user id
+    var uid = firebase.auth().currentUser.uid;
+
+    //getting info from firebase from previous payment page
+    var db = firebase.database().ref("user/").child(uid).child('TicID');
+    var db2 = firebase.database().ref('ticket/');
+    db.orderByKey().on('child_added', function(snapshot) {
+      var ticID = snapshot.key;
+      db.child(ticID).orderByKey().on('child_added', function(snap){
+        var realticID = snap.val();
+        db2.orderByKey().equalTo(realticID).on('child_added', function(snapshot){
+          console.log(snapshot.val());
+          db2.child(realticID).child('date').once('value').then(snapdate =>{
+            //debugging purposes & BROKEN
+            // console.log(snapdate.val());
+            // this.setState({ date: snapdate.val() });
+            console.log(snapdate.val());
+          });
+          //BROKEN
+          // db2.child(realticID).child('depature').on('value', function(snapdep){
+          //   console.log(snapdep.val());
+          //   this.setState({depature: snapdep.val()});
+          // });
+          // db2.child(realticID).child('destination').on('value', function(snapdes){
+          //   console.log(snapdes.val());
+          //   this.setState({destination: snapdes.val()});
+          // });
+          // db2.child(realticID).child('price').on('value', function(snappri){
+          //   console.log(snappri.val());
+          //   this.setState({price: snappri.val()});
+          // });
+          // db2.child(realticID).child('quantity').on('value', function(snapqtt){
+          //   console.log(snapqtt.val());
+          //   this.setState({qtt: snapqtt.val()});
+          // });
+          // db2.child(realticID).child('schedule').on('value', function(snapsd){
+          //   console.log(snapsd.val());
+          //   this.setState({schedule: snapsd.val()});
+          // });
+        });
+        //DEBUGGING 
+        // console.log(snap.val());
+      });
+      //DEBUGGING
+      // console.log(snapshot.key);
+      
+    });
+
   }
 
+  //USELESS
   // componentWillReceiveProps(props) {
   //   console.log(props.currentUser);
   //   this.setState({ asd: props.currentUser });
   // }
 
-  // gets called just before navigating away from the route
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
 
   // update the current time
   updateTime = () => {
     this.setState({ time: Date.now() });
   };
 
-  increment = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-
-  // Note: `user` comes from the URL, courtesy of our router
+  //BROKEN, WILL FIX OR DO FAKE
   render({ currentUser }, { time, count, user }) {
     return (
       <div class={style.profile}>
         <h1>
+          {/* show the name, email and time */}
           Welcome{" "}
           {currentUser &&
             currentUser.displayName && <span>{currentUser.displayName}</span>}
@@ -50,6 +96,7 @@ export default class Profile extends Component {
         <div>
           <h3>Current time: {new Date(time).toLocaleString()}</h3>
         </div>
+        {/* tickets bought by user or shown to admin */}
         <h2>Tickets</h2>
         <div class={style.tixcont}>
           <div>
@@ -68,14 +115,14 @@ export default class Profile extends Component {
               </div>
             </div>
             <div class={style.sec2}>
-              {/* <div class={style.qr}>
+              <div class={style.qr}>
                 <i class="material-icons" id={style.icon}>
                   local_activity
                 </i>
                 <p>
                   <small>Show QR Code</small>
                 </p>
-              </div> */}
+              </div>
               <div class={style.print}>
                 <i class="material-icons" id={style.icon}>
                   local_printshop
@@ -84,8 +131,8 @@ export default class Profile extends Component {
                   <small>Print ticket</small>
                 </p>
               </div>
-              <p>Purchased by UID: A01</p>
-              <p>Transaction Date: 3rd Sept 2018</p>
+              {/* <p>Purchased by UID: A01</p>
+              <p>Transaction Date: 3rd Sept 2018</p> */}
             </div>
           </div>
         </div>
@@ -106,14 +153,14 @@ export default class Profile extends Component {
               </div>
             </div>
             <div class={style.sec2}>
-              {/* <div class={style.qr}>
+              <div class={style.qr}>
                 <i class="material-icons" id={style.icon}>
                   local_activity
                 </i>
                 <p>
                   <small>Show QR Code</small>
                 </p>
-              </div> */}
+              </div>
               <div class={style.print}>
                 <i class="material-icons" id={style.icon}>
                   local_printshop
@@ -122,22 +169,11 @@ export default class Profile extends Component {
                   <small>Print ticket</small>
                 </p>
               </div>
-              <p>Purchased by UID: A01</p>
-              <p>Transaction Date: 3rd Sept 2018</p>
+              {/* <p>Purchased by UID: A01</p>
+              <p>Transaction Date: 3rd Sept 2018</p> */}
             </div>
           </div>
         </div>
-
-        <p>
-          <Button
-            raised
-            ripple
-            onClick={this.increment}
-            style="background-color: #d32f2f"
-          >
-            Log Out
-          </Button>{" "}
-        </p>
       </div>
     );
   }

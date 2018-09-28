@@ -9,8 +9,9 @@
   justify-content: space-between;
   padding: 28px;
   border-bottom: 1px solid lightgray;
+  cursor: pointer;
 }
-.cont2 {
+.toggled {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -37,4 +38,35 @@
 .cont[ active ] {
     border-left: 5px solid red;
     background-color: #E7D4D2;
+}
+.price {
+    text-align: end;
+}
+
+.textgreen {
+    border: 1px solid black;
+    border-radius: 3px;
+    background: #64dd17;
+    padding: 0 4px;
+    color: white;
+    line-height: 19px;
+    font-size: 14px;
+}
+.textyellow {
+    border: 1px solid black;
+    border-radius: 3px;
+    background: #ff6c6c;
+    padding: 0 4px;
+    color: white;
+    line-height: 19px;
+    font-size: 14px;
+}
+.textred {
+    border: 1px solid black;
+    border-radius: 3px;
+    background: #e21111;
+    padding: 0 4px;
+    color: white;
+    line-height: 19px;
+    font-size: 14px;
 }
