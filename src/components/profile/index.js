@@ -1,8 +1,9 @@
 import { h, Component } from "preact";
-import Button from "preact-material-components/Button";
 import "preact-material-components/Button/style.css";
 import style from "./style";
-import { firebase } from "@firebase/app";
+import  firebase  from "../firebase";
+import Dialog from 'preact-material-components/Dialog';
+import 'preact-material-components/Dialog/style.css';
 
 export default class Profile extends Component {
   state = {
@@ -13,78 +14,103 @@ export default class Profile extends Component {
 
   // the broken profile page
   componentDidMount() {
-    //useless
-    // start a timer for the clock:
-    // this.timer = setInterval(this.updateTime, 1000);
-    //debugging purposes
-    // console.log(this.state.currentUser);
-    
     // get the user id
     var uid = firebase.auth().currentUser.uid;
 
     //getting info from firebase from previous payment page
-    var db = firebase.database().ref("user/").child(uid).child('TicID');
-    var db2 = firebase.database().ref('ticket/');
-    db.orderByKey().on('child_added', function(snapshot) {
+    var db = firebase
+      .database()
+      .ref("user/")
+      .child(uid)
+      .child("TicID");
+    var db2 = firebase.database().ref("ticket/");
+    db.orderByKey().on("child_added", function(snapshot) {
       var ticID = snapshot.key;
-      db.child(ticID).orderByKey().on('child_added', function(snap){
-        var realticID = snap.val();
-        db2.orderByKey().equalTo(realticID).on('child_added', function(snapshot){
-          console.log(snapshot.val());
-          db2.child(realticID).child('date').once('value').then(snapdate =>{
-            //debugging purposes & BROKEN
-            // console.log(snapdate.val());
-            // this.setState({ date: snapdate.val() });
-            console.log(snapdate.val());
-          });
-          //BROKEN
-          // db2.child(realticID).child('depature').on('value', function(snapdep){
-          //   console.log(snapdep.val());
-          //   this.setState({depature: snapdep.val()});
-          // });
-          // db2.child(realticID).child('destination').on('value', function(snapdes){
-          //   console.log(snapdes.val());
-          //   this.setState({destination: snapdes.val()});
-          // });
-          // db2.child(realticID).child('price').on('value', function(snappri){
-          //   console.log(snappri.val());
-          //   this.setState({price: snappri.val()});
-          // });
-          // db2.child(realticID).child('quantity').on('value', function(snapqtt){
-          //   console.log(snapqtt.val());
-          //   this.setState({qtt: snapqtt.val()});
-          // });
-          // db2.child(realticID).child('schedule').on('value', function(snapsd){
-          //   console.log(snapsd.val());
-          //   this.setState({schedule: snapsd.val()});
-          // });
+      db.child(ticID)
+        .orderByKey()
+        .on("child_added", function(snap) {
+          var realticID = snap.val();
+          db2
+            .orderByKey()
+            .equalTo(realticID)
+            .on("child_added", function(snapshot) {
+              console.log(snapshot.val());
+              db2
+                .child(realticID)
+                .child("date")
+                .once("value")
+                .then(snapdate => {
+                  //debugging purposes & BROKEN
+                  // console.log(snapdate.val());
+                  // this.setState({ date: snapdate.val() });
+                  console.log(snapdate.val());
+                });
+              //BROKEN
+              // db2.child(realticID).child('depature').on('value', function(snapdep){
+              //   console.log(snapdep.val());
+              //   this.setState({depature: snapdep.val()});
+              // });
+              // db2.child(realticID).child('destination').on('value', function(snapdes){
+              //   console.log(snapdes.val());
+              //   this.setState({destination: snapdes.val()});
+              // });
+              // db2.child(realticID).child('price').on('value', function(snappri){
+              //   console.log(snappri.val());
+              //   this.setState({price: snappri.val()});
+              // });
+              // db2.child(realticID).child('quantity').on('value', function(snapqtt){
+              //   console.log(snapqtt.val());
+              //   this.setState({qtt: snapqtt.val()});
+              // });
+              // db2.child(realticID).child('schedule').on('value', function(snapsd){
+              //   console.log(snapsd.val());
+              //   this.setState({schedule: snapsd.val()});
+              // });
+            });
+          //DEBUGGING
+          // console.log(snap.val());
         });
-        //DEBUGGING 
-        // console.log(snap.val());
-      });
       //DEBUGGING
       // console.log(snapshot.key);
-      
     });
-
   }
-
-  //USELESS
-  // componentWillReceiveProps(props) {
-  //   console.log(props.currentUser);
-  //   this.setState({ asd: props.currentUser });
-  // }
-
 
   // update the current time
   updateTime = () => {
     this.setState({ time: Date.now() });
   };
 
-  //BROKEN, WILL FIX OR DO FAKE
+  toggleSignInDig = () => {
+    this.signoutDig.MDComponent.show();
+  };
+
+  openInNewTab = () => {
+    window.open('receipt.pdf')
+  }
+
+  //PARTIALLY BROKEN, WILL FIX OR DO FAKE
   render({ currentUser }, { time, count, user }) {
     return (
       <div class={style.profile}>
+      <div className={[style.signout_dialog, "signout_dialog"].join(" ")}>
+        <Dialog
+        onCancel={this.onClose}
+        onAccept={this.onClose}
+        ref={signoutDig => {
+          this.signoutDig = signoutDig;
+        }}
+        >
+          <Dialog.Header>Your Ticket QR Code</Dialog.Header>
+          <Dialog.Body>
+          <img src="qr test png.png"></img>
+          </Dialog.Body>
+          <Dialog.Footer>
+                <Dialog.FooterButton class={style.cancel_btn} accept>
+                  Not now
+                </Dialog.FooterButton>
+              </Dialog.Footer>
+        </Dialog>
+        </div>
         <h1>
           {/* show the name, email and time */}
           Welcome{" "}
@@ -115,7 +141,7 @@ export default class Profile extends Component {
               </div>
             </div>
             <div class={style.sec2}>
-              <div class={style.qr}>
+              <div class={style.qr} onClick={this.toggleSignInDig}>
                 <i class="material-icons" id={style.icon}>
                   local_activity
                 </i>
@@ -123,7 +149,7 @@ export default class Profile extends Component {
                   <small>Show QR Code</small>
                 </p>
               </div>
-              <div class={style.print}>
+              <div class={style.print} onClick={this.openInNewTab}>
                 <i class="material-icons" id={style.icon}>
                   local_printshop
                 </i>

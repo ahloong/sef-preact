@@ -2,11 +2,12 @@ import { h, Component } from "preact";
 import { Router } from "preact-router";
 import Header from "./header";
 import Home from "../routes/home";
-import Profile from "../routes/profile";
+import Profile from "./profile";
 import NotFound from "../routes/404";
-import firebase from "./firebase";
-import Ticket from "../routes/ticket";
-import Payment from "../routes/payment";
+import  firebase  from './firebase';
+import Ticket from "./ticket";
+import Payment from "./payment";
+
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 

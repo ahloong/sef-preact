@@ -11,6 +11,7 @@ import "preact-material-components/Theme/style.css";
 import { route } from "preact-router";
 import style from "./style";
 
+
 export default class Home extends Component {
   state = {
     chosenIndexFrSt: "Kl Sentral",

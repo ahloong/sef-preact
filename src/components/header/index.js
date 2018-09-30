@@ -13,46 +13,32 @@ import "preact-material-components/TextField/style.css";
 import "preact-material-components/Button/style.css";
 import "preact-material-components/Theme/style.css";
 import style from "./style";
-import firebase from "../firebase";
+import  firebase  from '../firebase';
+import 'firebase/auth'
 
 export default class Header extends Component {
-  closeDrawer() {
-    this.drawer.MDComponent.open = false;
-    this.state = {
-      darkThemeEnabled: false
-    };
-  }
+  // closeDrawer() {
+  //   this.drawer.MDComponent.open = false;
+  //   this.state = {
+  //     darkThemeEnabled: false
+  //   };
+  // }
 
-  openDrawer = () => (this.drawer.MDComponent.open = true);
+  // openDrawer = () => (this.drawer.MDComponent.open = true);
 
-  openSettings = () => this.dialog.MDComponent.show();
+  // openSettings = () => this.dialog.MDComponent.show();
 
-  drawerRef = drawer => (this.drawer = drawer);
-  dialogRef = dialog => (this.dialog = dialog);
+  // drawerRef = drawer => (this.drawer = drawer);
+  // dialogRef = dialog => (this.dialog = dialog);
 
-  linkTo = path => () => {
-    route(path);
-    this.closeDrawer();
-  };
-
-  goHome = this.linkTo("/");
-  goToMyProfile = this.linkTo("/profile");
-
-  //not going to be used
-  // toggleDarkTheme = () => {
-  //   this.setState(
-  //     {
-  //       darkThemeEnabled: !this.state.darkThemeEnabled
-  //     },
-  //     () => {
-  //       if (this.state.darkThemeEnabled) {
-  //         document.body.classList.add("mdc-theme--dark");
-  //       } else {
-  //         document.body.classList.remove("mdc-theme--dark");
-  //       }
-  //     }
-  //   );
+  // linkTo = path => () => {
+  //   route(path);
+  //   this.closeDrawer();
   // };
+
+  // goHome = this.linkTo("/");
+  // goToMyProfile = this.linkTo("/profile");
+
 
   //sign in using google account
   signIn = () => {

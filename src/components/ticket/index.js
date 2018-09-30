@@ -1,5 +1,4 @@
 import { h, Component } from "preact";
-import Button from "preact-material-components/Button";
 import "preact-material-components/Card/style.css";
 import "preact-material-components/Button/style.css";
 import "preact-material-components/List/style.css";
@@ -8,11 +7,15 @@ import "preact-material-components/Select/style.css";
 import "preact-material-components/Button/style.css";
 import "preact-material-components/Theme/style.css";
 import style from "./style";
-import { firebase } from "@firebase/app";
+import  firebase  from '../firebase';
 import { route } from "preact-router";
 
 export default class Ticket extends Component {
 
+  state = {
+    yellow: '7',
+    red: '3'
+  }
 
   componentWillMount() {
     //get the values from the home page after pressing the button
@@ -43,6 +46,15 @@ export default class Ticket extends Component {
     dbS03.child("time").once('value').then(snapshot => {
       this.setState({timeS03: snapshot.val()});
     });
+    dbS01.child('ticketnum').once('value').then(snapshot =>{
+      this.setState({ ticnumS01: snapshot.val() });
+    });
+    dbS02.child('ticketnum').once('value').then(snapshot =>{
+      this.setState({ ticnumS02: snapshot.val() });
+    });
+    dbS03.child('ticketnum').once('value').then(snapshot =>{
+      this.setState({ ticnumS03: snapshot.val() });
+    });
     this.setState({
       from : from,
       to : to,
@@ -54,24 +66,81 @@ export default class Ticket extends Component {
   //grab all including the previous values from the
   // home page values after choosing the price and time 
   grabS01 = () => {
-    console.log(this.state.priceS01, this.state.timeS01, this.state.from, this.state.to, this.state.date, this.state.quantity);
+    // firebase.database().ref("schedule/S01/ticketnum").transaction(update => {
+    //   return (update) -1;
+    // });
+    console.log(this.state.priceS01, this.state.timeS01, this.state.from, this.state.to, 
+      this.state.date, this.state.quantity, this.state.ticnumS01);
     route("/payment?from=" + this.state.from + "&to=" + this.state.to + "&date=" + this.state.date
-   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS01 + "&time=" + this.state.timeS01 +"&SID=S01")
+   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS01 + "&time=" 
+   + this.state.timeS01 +"&SID=S01")
   };
 
   grabS02 = () => {
-    console.log(this.state.priceS02, this.state.timeS02, this.state.from, this.state.to, this.state.date, this.state.quantity);
+    // firebase.database().ref("schedule/S02/ticketnum").transaction(update => {
+    //   return (update) -1;
+    // });
+    console.log(this.state.priceS02, this.state.timeS02, this.state.from, this.state.to, 
+      this.state.date, this.state.quantity, this.state.ticnumS02);
     route("/payment?from=" + this.state.from + "&to=" + this.state.to + "&date=" + this.state.date
-   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS02 + "&time=" + this.state.timeS02 +"&SID=S02")
+   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS02 + "&time=" 
+   + this.state.timeS02 +"&SID=S02")
   };
 
   grabS03 = () => {
-    console.log(this.state.priceS03, this.state.timeS03, this.state.from, this.state.to, this.state.date, this.state.quantity);
+    // firebase.database().ref("schedule/S03/ticketnum").transaction(update => {
+    //   return (update) -1;
+    // });
+    console.log(this.state.priceS03, this.state.timeS03, this.state.from, this.state.to, 
+      this.state.date, this.state.quantity, this.state.ticnumS03);
     route("/payment?from=" + this.state.from + "&to=" + this.state.to + "&date=" + this.state.date
-   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS03 + "&time=" + this.state.timeS03 +"&SID=S03")
+   + "&quantity=" + this.state.quantity + "&price=" + this.state.priceS03 + "&time=" 
+   + this.state.timeS03 +"&SID=S03" + "&ticnum=" + this.state.ticnumS03)
   };
 
   render() {
+    let statusS01, statusS02, statusS03;
+    if (this.state.ticnumS01 < this.state.red) {
+      statusS01 = (
+        <div class={style.textred}>Sold Out Soon</div>
+      )
+    }else if (this.state.ticnumS01 < this.state.yellow) {
+      statusS01 = (
+        <div class={style.textyellow}>Selling Fast</div>
+      )
+    }else {
+      statusS01 = (
+        <div class={style.textgreen}>Availble</div>
+      )
+    }
+
+    if (this.state.ticnumS02 < this.state.red) {
+      statusS02 = (
+        <div class={style.textred}>Sold Out Soon</div>
+      )
+    }else if (this.state.ticnumS02 < this.state.yellow) {
+      statusS02 = (
+        <div class={style.textyellow}>Selling Fast</div>
+      )
+    }else {
+      statusS02 = (
+        <div class={style.textgreen}>Availble</div>
+      )
+    }
+
+    if (this.state.ticnumS03 < this.state.red) {
+      statusS03 = (
+        <div class={style.textred}>Sold Out Soon</div>
+      )
+    }else if (this.state.ticnumS03 < this.state.yellow) {
+      statusS03 = (
+        <div class={style.textyellow}>Selling Fast</div>
+      )
+    }else {
+      statusS03 = (
+        <div class={style.textgreen}>Availble</div>
+      )
+    }
     return (
       <div>
         {/* the container that show the destination, date, quantity */}
@@ -101,7 +170,7 @@ export default class Ticket extends Component {
                 <div class={style.price}>
                 RM {this.state.priceS01}
                 </div>
-                <div class={style.textyellow}>Selling Fast</div>
+                { statusS01 }
               </div>
             </div>
             <div class={style.cont}
@@ -114,7 +183,9 @@ export default class Ticket extends Component {
               </div>
               <div>
                 <div class={style.price}>RM {this.state.priceS02}</div>
-                <div class={style.textred}>Sold Out Soon</div>
+                <div>
+                  { statusS02 }
+                </div>
               </div>
             </div>
             <div class={style.cont}
@@ -127,7 +198,9 @@ export default class Ticket extends Component {
               </div>
               <div>
                 <div class={style.price}>RM {this.state.priceS03}</div>
-                <div class={style.textgreen}>Availble</div>
+                <div>
+                  { statusS03 } 
+                </div>
               </div>
             </div>
           </div>
