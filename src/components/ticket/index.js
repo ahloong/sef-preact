@@ -110,7 +110,7 @@ export default class Ticket extends Component {
       )
     }else {
       statusS01 = (
-        <div class={style.textgreen}>Availble</div>
+        <div class={style.textgreen}>Available</div>
       )
     }
 
@@ -124,7 +124,7 @@ export default class Ticket extends Component {
       )
     }else {
       statusS02 = (
-        <div class={style.textgreen}>Availble</div>
+        <div class={style.textgreen}>Available</div>
       )
     }
 
@@ -138,7 +138,7 @@ export default class Ticket extends Component {
       )
     }else {
       statusS03 = (
-        <div class={style.textgreen}>Availble</div>
+        <div class={style.textgreen}>Available</div>
       )
     }
     return (
