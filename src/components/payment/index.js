@@ -106,7 +106,7 @@ export default class Payment extends Component {
     }
 
     let signstate;
-    if (this.state.name != null) {
+    if (this.state.Uid != null) {
       signstate = (
         <Button raised ripple
         onClick={this.submitpayment}>
